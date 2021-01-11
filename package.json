@@ -16,6 +16,9 @@
     "url": "https://github.com/ganamavo/onja-weather-app/issues"
   },
   "homepage": "https://github.com/ganamavo/onja-weather-app#readme",
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
   "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

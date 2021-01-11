@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import SearchByLocation from "../components/SearchByLocation";
 
 export default function App() {
     return (
-        <div>
-            Weather App
-        </div>
+        <section>
+            <SearchByLocation />
+        </section>
     )
 }
