@@ -1,0 +1,25 @@
+{
+  "name": "onja-weather-app",
+  "version": "1.0.0",
+  "description": "An app created to know the weather in where we are or in a different place",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganamavo/onja-weather-app.git"
+  },
+  "author": "Rinon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganamavo/onja-weather-app/issues"
+  },
+  "homepage": "https://github.com/ganamavo/onja-weather-app#readme",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1"
+  }
+}

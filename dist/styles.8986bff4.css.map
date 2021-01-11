@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"styles.8986bff4.css","sourceRoot":"..","sourcesContent":[" ul {\r\n     padding: 0;\r\n     list-style: none;\r\n }\r\n\r\n li, a {\r\n     text-decoration: none;\r\n }\r\n"]}
