@@ -24,8 +24,7 @@
  }
 
  .location_choice {
-      /* visibility: hidden; */
-
+      visibility: hidden;
  }
 
  input {

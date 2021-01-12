@@ -4,7 +4,7 @@ import App from './Pages/App';
 import { GlobalContext } from './GlobalContext';
 
 ReactDOM.render(
-    <GlobalContext> 
+    <GlobalContext>  
         <App /> 
     </GlobalContext>,
     document.getElementById("root"));

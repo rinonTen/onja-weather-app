@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Styled from 'styled-components';
-
+import { Context } from '../GlobalContext';
 import SearchByLocation from "../components/SearchByLocation";
 import TodayWeatherComponent from '../components/TodayWeatherComponent';
 import DayWeatherComponent from '../components/DayWeatherComponent';
@@ -11,21 +11,35 @@ const Main = Styled.main`
     grid-template-columns: 30% 68%;
     column-gap: 32px;
 
-    & div:first-of-type {
+    & .today {
         background: #1E213A;
         padding: 12px;
     }
 `
+
+const DaysWeatherCard = Styled.div`
+    display: grid;
+    grid-template-columns: 45% 45%;
+    gap: 32px;
+`
 export default function App() {
+    const { state } = useContext(Context);
+    const { weather, weatherDetails } = state;
+    console.log(weatherDetails);
+
+    const daysWeatherEl = weatherDetails !== [] && weatherDetails.consolidated_weather?.map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
+
     return (
         <Main>
-            <div>
+            <div className="today">
                 <SearchByLocation />
                 <TodayWeatherComponent />
             </div>
             <div>
-                <DayWeatherComponent />
-                <TodayHighlightsComponent />                
+                <DaysWeatherCard>
+                    {daysWeatherEl}
+                </DaysWeatherCard>
+                <TodayHighlightsComponent />
             </div>
         </Main>
     )

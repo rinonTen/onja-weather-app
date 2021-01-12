@@ -26,11 +26,24 @@ function GlobalContext({ children }) {
             weather.map(city => setLocationWoeid(city.woeid));
         }
     }, [weather, locationQuery, locationWoeid])
-  
-    console.log(weatherDetails)
-    console.log(weather)
+
+    // Date today to compare with the date in the api
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+    month = "0" + month;
+    let year = today.getFullYear();
+    if (day < 10){day = '0' + day};
+    //date today formated
+    today = year + '-' + month + '-' + day;
+    console.log(today);
+    if (month < 10) {month = '0' + month};
+
+  // Find today's weather
+  const todayWeather = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === today);
+   
     return (
-        <Context.Provider value={{ weather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
+        <Context.Provider value={{ state, dispatch, weather, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
             {children}
         </Context.Provider>
     )
