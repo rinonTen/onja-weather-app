@@ -4,11 +4,12 @@ const Context = createContext();
 const PROXI_URL = "https://cors-anywhere.herokuapp.com/";
 const API_URL = "https://www.metaweather.com/api/location/search/?query=";
 const WOEID_URL = "https://www.metaweather.com/api/location/";
+
 function GlobalContext({ children }) {
     const { state, dispatch, fetchWeather, fetchWeatherDetails } = Reducer(PROXI_URL, API_URL);
     let { weather, loading, weatherDetails } = state;
-    const [locationQuery, setLocationQuery] = useState("Amsterdam");
-    const [locationWoeid, setLocationWoeid] = useState("727232")
+    const [locationQuery, setLocationQuery] = useState("Amsterdam");// Default location
+    const [locationWoeid, setLocationWoeid] = useState("727232");//Default woeid
     const [showSearch, setShowSearch] = useState(false);
 
     // Fetch weather
@@ -25,7 +26,9 @@ function GlobalContext({ children }) {
             weather.map(city => setLocationWoeid(city.woeid));
         }
     }, [weather, locationQuery, locationWoeid])
- 
+  
+    console.log(weatherDetails)
+    console.log(weather)
     return (
         <Context.Provider value={{ weather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
             {children}
