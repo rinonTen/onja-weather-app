@@ -24,11 +24,9 @@ const DaysWeatherCard = Styled.div`
 `
 export default function App() {
     const { state } = useContext(Context);
-    const { weather, weatherDetails } = state;
-    console.log(weatherDetails);
-
+    const { weatherDetails } = state;
     const daysWeatherEl = weatherDetails !== [] && weatherDetails.consolidated_weather?.map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
-
+    // const todayHighlightsEl =  
     return (
         <Main>
             <div className="today">

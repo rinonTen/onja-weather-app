@@ -11,7 +11,8 @@ function GlobalContext({ children }) {
     const [locationQuery, setLocationQuery] = useState("Amsterdam");// Default location
     const [locationWoeid, setLocationWoeid] = useState("727232");//Default woeid
     const [showSearch, setShowSearch] = useState(false);
-
+    const [todayWeather, setWeatherToday] = useState({})
+    const [dayWeatherToHighlight, setDayWeatherToHighlight] = useState({});
     // Fetch weather
     let weatherEndpoint = PROXI_URL + API_URL + locationQuery;
 
@@ -35,15 +36,24 @@ function GlobalContext({ children }) {
     let year = today.getFullYear();
     if (day < 10){day = '0' + day};
     //date today formated
-    today = year + '-' + month + '-' + day;
-    console.log(today);
+    today = year + '-' + month + '-' + day; 
     if (month < 10) {month = '0' + month};
 
   // Find today's weather
-  const todayWeather = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === today);
-   
+  useEffect(() => {
+    const dateToday = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === today);
+    setWeatherToday(dateToday);
+    setDayWeatherToHighlight(dateToday)
+}, [weatherDetails])
+    
+  function highlightWeatherOfTheDay(e) {
+    const date = e.currentTarget.id
+    const dayToHighlight = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === date);
+    setDayWeatherToHighlight(dayToHighlight);
+}
+ 
     return (
-        <Context.Provider value={{ state, dispatch, weather, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
+        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
             {children}
         </Context.Provider>
     )
