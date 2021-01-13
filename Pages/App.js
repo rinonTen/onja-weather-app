@@ -27,7 +27,7 @@ export default function App() {
     const { state, todayWeather, showSearch } = useContext(Context);
     const { weatherDetails } = state;
     const daysWeatherEl = weatherDetails !== [] && weatherDetails?.filter(weather => weather !== todayWeather).map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
-    console.log(showSearch)
+     
     return (
         <Main>
             <div className="today">

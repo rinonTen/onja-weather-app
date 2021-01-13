@@ -15,6 +15,7 @@ function GlobalContext({ children }) {
     let { weather, loading, weatherDetails } = state;
     const [weatherDetailsUpdated, setWeatherDetailsUpdated] = useState([]);
     const [locationQuery, setLocationQuery] = useState("Amsterdam");// Default location
+    const [locationName, setLocationName] = useState('');
     const [locationWoeid, setLocationWoeid] = useState("727232");//Default woeid
     const [showSearch, setShowSearch] = useState(false);
     const [todayWeather, setWeatherToday] = useState({})
@@ -47,23 +48,11 @@ function GlobalContext({ children }) {
     // Find today's weather
     useEffect(() => {
         const dateToday = weatherDetails && weatherDetails.find(weather => weather.applicable_date === today);
-        const dayWeather = weatherDetails && weatherDetails.map(weather => {
-            return{
-                    ...weather,
-                    applicable_date: `${weekday[new Date(weather.applicable_date).getDay()]} ${new Date(weather.applicable_date).getDate()}, ${months[new Date(weather.applicable_date).getMonth()]}`
-                }}); 
-            setWeatherDetailsUpdated(dayWeather);
         setWeatherToday(dateToday);
         setDayWeatherToHighlight(dateToday)
     }, [dayFormated, weatherDetails])
+  
  
-    
-
-    useEffect(() => {
-        dispatch({ type: "SET_WEATHER_DETAILS", loading: false, weatherDetailsData: weatherDetailsUpdated})
-    }, [])
-console.log(weatherDetails)
-
     function highlightWeatherOfTheDay(e) {
         const date = e.currentTarget.id
         const dayToHighlight = weatherDetails && weatherDetails.find(weather => weather.applicable_date === date);
@@ -71,7 +60,7 @@ console.log(weatherDetails)
     }
 
     return (
-        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid, setShowSearch, showSearch }}>
+        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, locationQuery, locationName, setLocationName, setLocationWoeid, setShowSearch, showSearch }}>
             {children}
         </Context.Provider>
     )

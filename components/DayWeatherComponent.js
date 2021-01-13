@@ -20,43 +20,13 @@ const DayWeatherContainer = Styled.div`
 `
 export default function DayWeatherComponent({ weather_state_abbr, max_temp, min_temp, applicable_date }) {
     const { highlightWeatherOfTheDay } = useContext(Context);
-    let iconUrl;
-
-    if (weather_state_abbr === "hc") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/hc.svg";
-    }
-    if (weather_state_abbr === "sn") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/sn.svg";
-    }
-    if (weather_state_abbr === "sl") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/sl.svg";
-    }
-    if (weather_state_abbr === "h") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/h.svg";
-    }
-    if (weather_state_abbr === "t") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/t.svg";
-    }
-    if (weather_state_abbr === "hr") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/hr.svg";
-    }
-    if (weather_state_abbr === "lr") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/lr.svg";
-    }
-    if (weather_state_abbr === "s") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/s.svg";
-    }
-    if (weather_state_abbr === "lc") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/lc.svg";
-    }
-    if (weather_state_abbr === "c") {
-        iconUrl = "https://www.metaweather.com/static/img/weather/c.svg";
-    }
-
+let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+   
     return (
         <DayWeatherContainer id={applicable_date} onClick={highlightWeatherOfTheDay} className="day_weather_container">
-            <h3 className="day">{applicable_date}</h3>
-            <img src={iconUrl} alt={`${weather_state_abbr}'s icon`} />
+            <h3 className="day"> {weekday[new Date(applicable_date).getDay()]} {new Date(applicable_date).getDate()}, {months[new Date(applicable_date).getMonth()]} </h3>
+            <img src={`https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`} alt={`${weather_state_abbr}'s icon`} />
             <div className="temperature">
                 <p>{Math.round(max_temp)}°C</p>
                 <p>{Math.round(min_temp)}°C</p>

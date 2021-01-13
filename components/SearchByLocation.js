@@ -1,34 +1,38 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../GlobalContext';
 
 export default function SearchByLocation() {
-    const {setLocationQuery, setLocationWoeid} = useContext(Context);
-     
+
+    const { weather, setLocationQuery, locationName, setLocationName, setLocationWoeid, setShowSearch } = useContext(Context);
+ console.log(weather)
     function searchLocation(e) {
         e.preventDefault();
-        setLocationQuery(e.target.location.value)
+        setLocationName(e.target.location.value)
     }
 
-    function handleCheckboxes(e) {
-        if(e.target.checked) {
-            setLocationQuery(e.target.id)
-        }
-    }
     return (
         <div>
+            <button type="button" onClick={() => setShowSearch(false)}>&#215;</button>
             <form onSubmit={searchLocation}>
-                <label htmlFor="search_location">
-                    <input type="text" name="location" placeholder="Search location" />
+                <div>
+                    <label htmlFor="search_location">
+                        <input type="text" name="location" placeholder="Search location" />
+                    </label>
+                    {
+                        locationName !== "" &&
+                        <label htmlFor="search_location">
+                            <input type="text" onClick={(e) => {
+                                setLocationQuery(e.target.value)
+                                setShowSearch(false)
+                            }}
+                            name="locationName" value={locationName} placeholder="Search location" readOnly />
+                        </label>
+                    }
+
+                </div>
+                <div>
                     <button type="submit">Search</button>
-                </label>
-                <label htmlFor="london">
-                    <span>London</span>
-                    <input onChange={handleCheckboxes} className="location_choice" name="city" type="checkbox" id="london"/>
-                </label>
-                <label htmlFor="new york">
-                    <span>New York</span>
-                    <input className="location_choice" onChange={handleCheckboxes} name="city" type="checkbox" id="new york" />
-                </label>
+                </div>
             </form>
         </div>
     )

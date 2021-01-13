@@ -32140,6 +32140,7 @@ function GlobalContext({
   const [weatherDetailsUpdated, setWeatherDetailsUpdated] = (0, _react.useState)([]);
   const [locationQuery, setLocationQuery] = (0, _react.useState)("Amsterdam"); // Default location
 
+  const [locationName, setLocationName] = (0, _react.useState)('');
   const [locationWoeid, setLocationWoeid] = (0, _react.useState)("727232"); //Default woeid
 
   const [showSearch, setShowSearch] = (0, _react.useState)(false);
@@ -32179,23 +32180,9 @@ function GlobalContext({
 
   (0, _react.useEffect)(() => {
     const dateToday = weatherDetails && weatherDetails.find(weather => weather.applicable_date === today);
-    const dayWeather = weatherDetails && weatherDetails.map(weather => {
-      return { ...weather,
-        applicable_date: `${weekday[new Date(weather.applicable_date).getDay()]} ${new Date(weather.applicable_date).getDate()}, ${months[new Date(weather.applicable_date).getMonth()]}`
-      };
-    });
-    setWeatherDetailsUpdated(dayWeather);
     setWeatherToday(dateToday);
     setDayWeatherToHighlight(dateToday);
   }, [dayFormated, weatherDetails]);
-  (0, _react.useEffect)(() => {
-    dispatch({
-      type: "SET_WEATHER_DETAILS",
-      loading: false,
-      weatherDetailsData: weatherDetailsUpdated
-    });
-  }, []);
-  console.log(weatherDetails);
 
   function highlightWeatherOfTheDay(e) {
     const date = e.currentTarget.id;
@@ -32214,6 +32201,9 @@ function GlobalContext({
       weatherDetails,
       setShowSearch,
       setLocationQuery,
+      locationQuery,
+      locationName,
+      setLocationName,
       setLocationWoeid,
       setShowSearch,
       showSearch
@@ -32238,10 +32228,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function SearchLocationComponent() {
   const {
-    setShowSearch
+    setShowSearch,
+    setLocationName
   } = (0, _react.useContext)(_GlobalContext.Context);
   return /*#__PURE__*/_react.default.createElement("form", null, /*#__PURE__*/_react.default.createElement("input", {
-    onClick: () => setShowSearch(true),
+    onClick: () => {
+      setLocationName("");
+      setShowSearch(true);
+    },
     type: "text"
   }), /*#__PURE__*/_react.default.createElement("button", null, "search"));
 }
@@ -32263,48 +32257,46 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function SearchByLocation() {
   const {
+    weather,
     setLocationQuery,
-    setLocationWoeid
+    locationName,
+    setLocationName,
+    setLocationWoeid,
+    setShowSearch
   } = (0, _react.useContext)(_GlobalContext.Context);
+  console.log(weather);
 
   function searchLocation(e) {
     e.preventDefault();
-    setLocationQuery(e.target.location.value);
+    setLocationName(e.target.location.value);
   }
 
-  function handleCheckboxes(e) {
-    if (e.target.checked) {
-      setLocationQuery(e.target.id);
-    }
-  }
-
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("form", {
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", {
+    type: "button",
+    onClick: () => setShowSearch(false)
+  }, "\xD7"), /*#__PURE__*/_react.default.createElement("form", {
     onSubmit: searchLocation
-  }, /*#__PURE__*/_react.default.createElement("label", {
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "search_location"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "text",
     name: "location",
     placeholder: "Search location"
-  }), /*#__PURE__*/_react.default.createElement("button", {
+  })), locationName !== "" && /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: "search_location"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    onClick: e => {
+      setLocationQuery(e.target.value);
+      setShowSearch(false);
+    },
+    name: "locationName",
+    value: locationName,
+    placeholder: "Search location",
+    readOnly: true
+  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
-  }, "Search")), /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "london"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "London"), /*#__PURE__*/_react.default.createElement("input", {
-    onChange: handleCheckboxes,
-    className: "location_choice",
-    name: "city",
-    type: "checkbox",
-    id: "london"
-  })), /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "new york"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "New York"), /*#__PURE__*/_react.default.createElement("input", {
-    className: "location_choice",
-    onChange: handleCheckboxes,
-    name: "city",
-    type: "checkbox",
-    id: "new york"
-  }))));
+  }, "Search"))));
 }
 },{"react":"node_modules/react/index.js","../GlobalContext":"GlobalContext.js"}],"components/TodayWeatherComponent.js":[function(require,module,exports) {
 "use strict";
@@ -32329,6 +32321,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 const Img = _styledComponents.default.img`
     width: 90%; 
 `;
+let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function TodayWeatherComponent() {
   const {
@@ -32338,56 +32332,12 @@ function TodayWeatherComponent() {
   const {
     weather
   } = state;
-  let iconUrl;
-
-  if (todayWeather) {
-    if (todayWeather.weather_state_abbr === "hc") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/hc.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "sn") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/sn.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "sl") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/sl.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "h") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/h.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "t") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/t.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "hr") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/hr.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "lr") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/lr.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "s") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/s.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "lc") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/lc.svg";
-    }
-
-    if (todayWeather.weather_state_abbr === "c") {
-      iconUrl = "https://www.metaweather.com/static/img/weather/c.svg";
-    }
-  }
-
   return /*#__PURE__*/_react.default.createElement("div", null, todayWeather ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(Img, {
-    src: iconUrl,
+    src: `https://www.metaweather.com/static/img/weather/${todayWeather.weather_state_abbr}.svg`,
     alt: `${todayWeather.weather_state_abbr}'s image`
   }), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, Math.round(todayWeather.the_temp), /*#__PURE__*/_react.default.createElement("span", {
     className: "temp_degre"
-  }, "\xB0C")), /*#__PURE__*/_react.default.createElement("li", null, todayWeather.weather_state_name), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("span", null, "Today"), /*#__PURE__*/_react.default.createElement("span", null, todayWeather.applicable_date)), /*#__PURE__*/_react.default.createElement("li", {
+  }, "\xB0C")), /*#__PURE__*/_react.default.createElement("li", null, todayWeather.weather_state_name), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("span", null, "Today - "), /*#__PURE__*/_react.default.createElement("span", null, weekday[new Date(todayWeather.applicable_date).getDay()], " ", new Date(todayWeather.applicable_date).getDate(), ", ", months[new todayWeather.Date(applicable_date).getMonth()])), /*#__PURE__*/_react.default.createElement("li", {
     className: "city"
   }, weather[0]?.title))) : /*#__PURE__*/_react.default.createElement("div", null, "loading..."));
 }
@@ -32436,56 +32386,16 @@ function DayWeatherComponent({
   const {
     highlightWeatherOfTheDay
   } = (0, _react.useContext)(_GlobalContext.Context);
-  let iconUrl;
-
-  if (weather_state_abbr === "hc") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/hc.svg";
-  }
-
-  if (weather_state_abbr === "sn") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/sn.svg";
-  }
-
-  if (weather_state_abbr === "sl") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/sl.svg";
-  }
-
-  if (weather_state_abbr === "h") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/h.svg";
-  }
-
-  if (weather_state_abbr === "t") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/t.svg";
-  }
-
-  if (weather_state_abbr === "hr") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/hr.svg";
-  }
-
-  if (weather_state_abbr === "lr") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/lr.svg";
-  }
-
-  if (weather_state_abbr === "s") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/s.svg";
-  }
-
-  if (weather_state_abbr === "lc") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/lc.svg";
-  }
-
-  if (weather_state_abbr === "c") {
-    iconUrl = "https://www.metaweather.com/static/img/weather/c.svg";
-  }
-
+  let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return /*#__PURE__*/_react.default.createElement(DayWeatherContainer, {
     id: applicable_date,
     onClick: highlightWeatherOfTheDay,
     className: "day_weather_container"
   }, /*#__PURE__*/_react.default.createElement("h3", {
     className: "day"
-  }, applicable_date), /*#__PURE__*/_react.default.createElement("img", {
-    src: iconUrl,
+  }, " ", weekday[new Date(applicable_date).getDay()], " ", new Date(applicable_date).getDate(), ", ", months[new Date(applicable_date).getMonth()], " "), /*#__PURE__*/_react.default.createElement("img", {
+    src: `https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`,
     alt: `${weather_state_abbr}'s icon`
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "temperature"
@@ -32603,7 +32513,6 @@ function App() {
   const daysWeatherEl = weatherDetails !== [] && weatherDetails?.filter(weather => weather !== todayWeather).map(weather => /*#__PURE__*/_react.default.createElement(_DayWeatherComponent.default, _extends({
     key: weather.id
   }, weather)));
-  console.log(showSearch);
   return /*#__PURE__*/_react.default.createElement(Main, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "today"
   }, showSearch ? /*#__PURE__*/_react.default.createElement(_SearchByLocation.default, null) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_SearchLocationComponent.default, null), /*#__PURE__*/_react.default.createElement(_TodayWeatherComponent.default, null))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(DaysWeatherCard, null, daysWeatherEl), /*#__PURE__*/_react.default.createElement(_TodayHighlightsComponent.default, null)));

@@ -6,51 +6,19 @@ const Img = Styled.img`
     width: 90%; 
 `
 
-
+let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+   
 export default function TodayWeatherComponent() {
     const { state, todayWeather } = useContext(Context);
     const {weather } = state;
 
-    let iconUrl; 
-    if (todayWeather) {
-        if (todayWeather.weather_state_abbr === "hc") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/hc.svg";
-        }
-        if (todayWeather.weather_state_abbr === "sn") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/sn.svg";
-        }
-        if (todayWeather.weather_state_abbr === "sl") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/sl.svg";
-        }
-        if (todayWeather.weather_state_abbr === "h") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/h.svg";
-        }
-        if (todayWeather.weather_state_abbr === "t") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/t.svg";
-        }
-        if (todayWeather.weather_state_abbr === "hr") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/hr.svg";
-        }
-        if (todayWeather.weather_state_abbr === "lr") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/lr.svg";
-        }
-        if (todayWeather.weather_state_abbr === "s") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/s.svg";
-        }
-        if (todayWeather.weather_state_abbr === "lc") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/lc.svg";
-        }
-        if (todayWeather.weather_state_abbr === "c") {
-            iconUrl = "https://www.metaweather.com/static/img/weather/c.svg";
-        }
-    }
-    
     return (
         <div>
             {
                 todayWeather ?
                     <>
-                        <Img src={iconUrl} alt={`${todayWeather.weather_state_abbr}'s image`} />
+                        <Img src={`https://www.metaweather.com/static/img/weather/${todayWeather.weather_state_abbr}.svg`} alt={`${todayWeather.weather_state_abbr}'s image`} />
                         <ul>
                             <li>
                                 {Math.round(todayWeather.the_temp)}
@@ -58,14 +26,13 @@ export default function TodayWeatherComponent() {
                             </li>
                             <li>{todayWeather.weather_state_name}</li>
                             <li>
-                                <span>Today</span>
-                                <span>{todayWeather.applicable_date}</span>
+                                <span>Today - </span>
+                                <span>{weekday[new Date(todayWeather.applicable_date).getDay()]} {new Date(todayWeather.applicable_date).getDate()}, {months[new todayWeather.Date(applicable_date).getMonth()]}</span>
                             </li>
                             <li className="city">{weather[0]?.title}</li>
                         </ul>
                     </>
                     : <div>loading...</div>
-
             }
         </div>
     )
