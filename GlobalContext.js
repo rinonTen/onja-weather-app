@@ -1,13 +1,19 @@
 import React, { useEffect, useState, createContext, useContext } from 'react'
-import Reducer from './Reducer';
+import Reducer from './Reducer'; 
+import DateFormat from './DateFormat';
+
 const Context = createContext();
 const PROXI_URL = "https://cors-anywhere.herokuapp.com/";
 const API_URL = "https://www.metaweather.com/api/location/search/?query=";
 const WOEID_URL = "https://www.metaweather.com/api/location/";
+let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 
 function GlobalContext({ children }) {
     const { state, dispatch, fetchWeather, fetchWeatherDetails } = Reducer(PROXI_URL, API_URL);
+    const {getMonthFormated, setDayFormated, dayFormated, monthFormated } = DateFormat();
     let { weather, loading, weatherDetails } = state;
+    const [weatherDetailsUpdated, setWeatherDetailsUpdated] = useState([]);
     const [locationQuery, setLocationQuery] = useState("Amsterdam");// Default location
     const [locationWoeid, setLocationWoeid] = useState("727232");//Default woeid
     const [showSearch, setShowSearch] = useState(false);
@@ -20,13 +26,12 @@ function GlobalContext({ children }) {
         fetchWeather(weatherEndpoint);
         fetchWeatherDetails(PROXI_URL + WOEID_URL + locationWoeid + "/")
     }, [locationQuery, locationWoeid])
-
-
+ 
     useEffect(() => {
         if (loading == false) {
             weather.map(city => setLocationWoeid(city.woeid));
-        }
-    }, [weather, locationQuery, locationWoeid])
+        } 
+    }, [locationQuery, locationWoeid, weather])
 
     // Date today to compare with the date in the api
     let today = new Date();
@@ -34,26 +39,39 @@ function GlobalContext({ children }) {
     let month = today.getMonth() + 1;
     month = "0" + month;
     let year = today.getFullYear();
-    if (day < 10){day = '0' + day};
+    if (day < 10) { day = '0' + day };
     //date today formated
-    today = year + '-' + month + '-' + day; 
-    if (month < 10) {month = '0' + month};
+    today = year + '-' + month + '-' + day;
+    if (month < 10) { month = '0' + month };
 
-  // Find today's weather
-  useEffect(() => {
-    const dateToday = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === today);
-    setWeatherToday(dateToday);
-    setDayWeatherToHighlight(dateToday)
-}, [weatherDetails])
-    
-  function highlightWeatherOfTheDay(e) {
-    const date = e.currentTarget.id
-    const dayToHighlight = weatherDetails.consolidated_weather &&  weatherDetails.consolidated_weather.find(weather => weather.applicable_date === date);
-    setDayWeatherToHighlight(dayToHighlight);
-}
+    // Find today's weather
+    useEffect(() => {
+        const dateToday = weatherDetails && weatherDetails.find(weather => weather.applicable_date === today);
+        const dayWeather = weatherDetails && weatherDetails.map(weather => {
+            return{
+                    ...weather,
+                    applicable_date: `${weekday[new Date(weather.applicable_date).getDay()]} ${new Date(weather.applicable_date).getDate()}, ${months[new Date(weather.applicable_date).getMonth()]}`
+                }}); 
+            setWeatherDetailsUpdated(dayWeather);
+        setWeatherToday(dateToday);
+        setDayWeatherToHighlight(dateToday)
+    }, [dayFormated, weatherDetails])
  
+    
+
+    useEffect(() => {
+        dispatch({ type: "SET_WEATHER_DETAILS", loading: false, weatherDetailsData: weatherDetailsUpdated})
+    }, [])
+console.log(weatherDetails)
+
+    function highlightWeatherOfTheDay(e) {
+        const date = e.currentTarget.id
+        const dayToHighlight = weatherDetails && weatherDetails.find(weather => weather.applicable_date === date);
+        setDayWeatherToHighlight(dayToHighlight);
+    }
+
     return (
-        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid }}>
+        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, setLocationWoeid, setShowSearch, showSearch }}>
             {children}
         </Context.Provider>
     )

@@ -35,7 +35,7 @@ export default function Reducer() {
     async function fetchWeatherDetails(endpoint) {
         const response = await fetch(endpoint);
         const data = await response.json(); 
-        dispatch({ type: "SET_WEATHER_DETAILS", loading: false, weatherDetailsData: data})
+        dispatch({ type: "SET_WEATHER_DETAILS", loading: false, weatherDetailsData: data.consolidated_weather})
     }
     return { state, dispatch, fetchWeather, fetchWeatherDetails };
  

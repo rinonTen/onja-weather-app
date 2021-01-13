@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Styled from 'styled-components';
 import { Context } from '../GlobalContext';
+import SearchLocationComponent from '../components/SearchLocationComponent';
 import SearchByLocation from "../components/SearchByLocation";
 import TodayWeatherComponent from '../components/TodayWeatherComponent';
 import DayWeatherComponent from '../components/DayWeatherComponent';
@@ -23,15 +24,22 @@ const DaysWeatherCard = Styled.div`
     gap: 32px;
 `
 export default function App() {
-    const { state } = useContext(Context);
+    const { state, todayWeather, showSearch } = useContext(Context);
     const { weatherDetails } = state;
-    const daysWeatherEl = weatherDetails !== [] && weatherDetails.consolidated_weather?.map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
-    // const todayHighlightsEl =  
+    const daysWeatherEl = weatherDetails !== [] && weatherDetails?.filter(weather => weather !== todayWeather).map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
+    console.log(showSearch)
     return (
         <Main>
             <div className="today">
-                <SearchByLocation />
-                <TodayWeatherComponent />
+                {
+                    showSearch ?
+                        <SearchByLocation />
+                        :
+                        <>
+                            <SearchLocationComponent />
+                            <TodayWeatherComponent />
+                        </>
+                }
             </div>
             <div>
                 <DaysWeatherCard>
@@ -39,6 +47,7 @@ export default function App() {
                 </DaysWeatherCard>
                 <TodayHighlightsComponent />
             </div>
+
         </Main>
     )
 }
