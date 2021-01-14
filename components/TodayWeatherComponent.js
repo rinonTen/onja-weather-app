@@ -25,10 +25,9 @@ const TodayWeatherContainer = Styled.div`
         font-weight: 600;
         font-size: 36px;
         line-height: 42px;
-        transform: translateX(30px);
-        margin-top: 11px;
-        margin-bottom: 25px;
-    
+        transform: translateX(18px);
+        margin-top: 23px;
+        margin-bottom: 48px;
     }
 
     .weather_state, 
@@ -38,11 +37,11 @@ const TodayWeatherContainer = Styled.div`
     }  
 
     .dayname {
-        margin-bottom: 16px;
+        margin-bottom: 23px;
     }
 
     .city {
-        transform: translateX(30px);
+        transform: translateX(18px);
     }
     .dayname,
     .city {

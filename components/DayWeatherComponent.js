@@ -29,6 +29,10 @@ const DayWeatherContainer = Styled.div`
         line-height: 19px;
     }
 
+    .temperature p:nth-of-type(2) {
+        color: #A09FB1;
+    }
+
     .day {
         font-weight: 500;
         font-size: 16px;

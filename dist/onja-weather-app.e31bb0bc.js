@@ -32409,10 +32409,9 @@ const TodayWeatherContainer = _styledComponents.default.div`
         font-weight: 600;
         font-size: 36px;
         line-height: 42px;
-        transform: translateX(30px);
-        margin-top: 11px;
-        margin-bottom: 25px;
-    
+        transform: translateX(18px);
+        margin-top: 23px;
+        margin-bottom: 48px;
     }
 
     .weather_state, 
@@ -32422,11 +32421,11 @@ const TodayWeatherContainer = _styledComponents.default.div`
     }  
 
     .dayname {
-        margin-bottom: 16px;
+        margin-bottom: 23px;
     }
 
     .city {
-        transform: translateX(30px);
+        transform: translateX(18px);
     }
     .dayname,
     .city {
@@ -32522,6 +32521,10 @@ const DayWeatherContainer = _styledComponents.default.div`
         line-height: 19px;
     }
 
+    .temperature p:nth-of-type(2) {
+        color: #A09FB1;
+    }
+
     .day {
         font-weight: 500;
         font-size: 16px;
@@ -32582,12 +32585,23 @@ const TodayHighlightsArticle = _styledComponents.default.section`
    h2 {
     margin: 23px;   
    }
-   
-    & div {
+
+    & .card_container {
         background: #1E213A;
         padding: 12px;
         margin: 23px;
         margin-bottom: 32px;
+    }
+
+    .weather_highlighted {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
+    .weather_highlighted.humidity p{
+         flex-basis: 100%;
     }
 
     .progress_humidity {
@@ -32602,6 +32616,10 @@ const TodayHighlightsArticle = _styledComponents.default.section`
             line-height: 14px;
         }
     }
+    .page_paragraph.number {
+        font-size: 64px;
+        line-height: 75px;
+    }
 
     p.progress_percentage {
         margin: 0;
@@ -32612,6 +32630,30 @@ const TodayHighlightsArticle = _styledComponents.default.section`
             display: block;
         }
     }
+
+    h3 {
+        font-size: 16px;
+        line-height: 19px;
+    }
+
+    page_paragraph.number {
+        font-weight: bold;
+        font-size: 60px;
+        line-height: 71px;
+ 
+    }
+
+    .unity {
+        font-weight: 500;
+        font-size: 51px; 
+    }
+
+    .humidity_container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
 `;
 
 function TodayHighlightsComponent() {
@@ -32621,10 +32663,20 @@ function TodayHighlightsComponent() {
   return /*#__PURE__*/_react.default.createElement("section", null, dayWeatherToHighlight && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h2", null, dayWeatherToHighlight.applicable_date, "'s highlights"), /*#__PURE__*/_react.default.createElement(TodayHighlightsArticle, {
     className: "page_article"
   }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "wind_status"
-  }, /*#__PURE__*/_react.default.createElement("p", null, "Wind status"), /*#__PURE__*/_react.default.createElement("p", null, Math.round(dayWeatherToHighlight.wind_speed), "mph"), /*#__PURE__*/_react.default.createElement("p", null, dayWeatherToHighlight.weather_state_abbr)), /*#__PURE__*/_react.default.createElement("div", {
-    className: "humidity"
-  }, /*#__PURE__*/_react.default.createElement("p", null, "Humidity"), /*#__PURE__*/_react.default.createElement("p", null, dayWeatherToHighlight.humidity, "%"), /*#__PURE__*/_react.default.createElement("label", {
+    className: "card_container weather_highlighted wind_status"
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Wind status"), /*#__PURE__*/_react.default.createElement("p", {
+    className: "page_paragraph number"
+  }, Math.round(dayWeatherToHighlight.wind_speed), " ", /*#__PURE__*/_react.default.createElement("span", {
+    className: "unity"
+  }, "mph")), /*#__PURE__*/_react.default.createElement("p", null, dayWeatherToHighlight.weather_state_abbr))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card_container humidity"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "humidity_container"
+  }, /*#__PURE__*/_react.default.createElement("h3", null, "Humidity"), /*#__PURE__*/_react.default.createElement("p", {
+    className: "page_paragraph number"
+  }, dayWeatherToHighlight.humidity, "%")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card_container humidity_measurement"
+  }, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "humidity",
     className: "progress_humidity"
   }, /*#__PURE__*/_react.default.createElement("span", {
@@ -32639,11 +32691,19 @@ function TodayHighlightsComponent() {
     max: "100"
   }, " 32% "), /*#__PURE__*/_react.default.createElement("p", {
     className: "progress_percentage"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "%"))), /*#__PURE__*/_react.default.createElement("div", {
-    className: "visibility"
-  }, /*#__PURE__*/_react.default.createElement("p", null, "Visibility"), /*#__PURE__*/_react.default.createElement("p", null, Math.round(dayWeatherToHighlight.visibility), "miles")), /*#__PURE__*/_react.default.createElement("div", {
-    className: "air_pressure"
-  }, /*#__PURE__*/_react.default.createElement("p", null, "Air presure"), /*#__PURE__*/_react.default.createElement("p", null, dayWeatherToHighlight.air_pressure, "mb")))));
+  }, /*#__PURE__*/_react.default.createElement("span", null, "%")))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card_container weather_highlighted visibility"
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Visibility"), /*#__PURE__*/_react.default.createElement("p", {
+    className: "page_paragraph number"
+  }, Math.round(dayWeatherToHighlight.visibility), " ", /*#__PURE__*/_react.default.createElement("span", {
+    className: "unity"
+  }, "miles")))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card_container weather_highlighted air_pressure"
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Air presure"), /*#__PURE__*/_react.default.createElement("p", {
+    className: "page_paragraph number"
+  }, dayWeatherToHighlight.air_pressure, " ", /*#__PURE__*/_react.default.createElement("span", {
+    className: "unity"
+  }, "mb")))))));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../GlobalContext":"GlobalContext.js"}],"Pages/App.js":[function(require,module,exports) {
 "use strict";
@@ -32686,7 +32746,7 @@ const Main = _styledComponents.default.main`
 `;
 const DaysWeatherCard = _styledComponents.default.div`
     display: grid;
-    grid-template-columns: 48% 48%;
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px;
     padding: 54px;
 `;

@@ -16,7 +16,7 @@ const Main = Styled.main`
 
 const DaysWeatherCard = Styled.div`
     display: grid;
-    grid-template-columns: 48% 48%;
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px;
     padding: 54px;
 `

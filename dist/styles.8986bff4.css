@@ -25,12 +25,22 @@
      display: block;
  }
 
+ section h2 {
+     margin-left: 23px;
+ }
+
  .location_choice {
      visibility: hidden;
  }
 
  input {
      width: 100%;
+ }
+
+ input::placeholder {
+    font-size: 15px;
+    line-height: 19px; 
+    color: #E7E7EB;
  }
 
  progress {
