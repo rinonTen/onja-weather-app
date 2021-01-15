@@ -34,6 +34,18 @@
      margin-left: 23px;
  }
 
+ /* div#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
+
+ .loading_text {
+     margin-top: 200px;
+     margin-left: 50px;
+     font-size: 32px;
+     font-weight: 600;
+ }
  .location_choice {
      visibility: hidden;
  }
