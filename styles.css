@@ -38,7 +38,7 @@
      visibility: hidden;
  }
 
- .today {
+ .weather_today_container {
      position: absolute;
      top: 0;
      bottom: 0;
@@ -48,7 +48,7 @@
  }
 
  input {
-    background: #1E213A;
+     background: #1E213A;
      width: 100%;
  }
 
@@ -74,15 +74,18 @@
      grid-row: 1;
  }
 
- .input_container input,
- .locations_container input,
- .locations_container input:hover {
+ .input_container input, .locations_container input, .locations_container input:hover {
      border: 1px solid #E7E7EB;
      box-sizing: border-box;
      padding: 15px;
      padding-left: 15px;
-     padding-right: 15px; 
+     padding-right: 15px;
      margin-bottom: 38px;
+ }
+ .input_container input {
+    font-size: 16px;
+    line-height: 19px;
+    color: #616475;
  }
 
  .locations_container {
@@ -91,10 +94,10 @@
  }
 
  .locations_container input {
-    border: none;
-    font-size: 16px;
-    line-height: 19px;
-    color: #E7E7EB;
+     border: none;
+     font-size: 16px;
+     line-height: 19px;
+     color: #E7E7EB;
  }
 
  .locations_container input {
@@ -118,7 +121,7 @@
  }
 
  .submit_btn_container button {
-    height: 48px;
+     height: 48px;
      border: none;
      background: #3C47E9;
      padding: 11px;
@@ -131,15 +134,35 @@
  }
 
  @media(min-width: 1114px) {
-     body {
-         max-width: 1114px;
-         margin-left: auto;
-         margin-right: auto;
+     /* body {}
+     #root {
+         position: relative;
      }
+     header {
+         position: absolute;
+     } */
      main {
          display: grid;
-         grid-template-columns: 30% 68%;
+         grid-template-columns: 28% auto;
          column-gap: 32px;
+     }
+
+     section h2 {
+        margin-bottom: 0;
+    }
+
+     main.sc-jSgupP.LJwnr {
+         grid-gap: 110px;
+         padding-right: 88px;
+     }
+
+     .sc-gKsewC.eczXlG.days_weather_container {
+         padding: 0;
+     }
+     .sc-gKsewC.eczXlG.days_weather_container {
+         grid-template-columns: repeat(5, 1fr);
+         padding-top: 148px;
+         padding-bottom: 72px;
      }
      .days_weather_container {
          display: grid;
@@ -151,4 +174,31 @@
          grid-template-columns: 48% 48%;
          gap: 48px;
      }
+     .card_container.weather_highlighted.wind_status {
+         height: 204px;
+         margin: 0;
+         margin-top: 23px;
+     } 
+
+     .card_container.humidity {
+         margin: 0;
+         height: 204px;
+     }
+     p.page_paragraph.number {
+         margin-bottom: 32px;
+     }
+     .card_container.humidity_measurement {
+         transform: translateY(-51px);
+     }
+     .card_container.humidity {
+         margin: 0;
+     } 
+
+     .card_container.weather_highlighted.visibility {
+        margin: 0;
+    }
+
+    .card_container.weather_highlighted.air_pressure {
+        margin: 0;
+    }
  }

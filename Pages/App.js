@@ -7,7 +7,7 @@ import SearchByLocation from "../components/SearchByLocation";
 import TodayWeatherComponent from '../components/TodayWeatherComponent';
 import DayWeatherComponent from '../components/DayWeatherComponent';
 import TodayHighlightsComponent from '../components/TodayHighlightsComponent';
- 
+
 const Main = Styled.main`
     & .today {
         background: #1E213A; 
@@ -22,32 +22,37 @@ const DaysWeatherCard = Styled.div`
 `
 export default function App() {
     const { state, todayWeather, showSearch } = useContext(Context);
-    const { weatherDetails } = state;
+    const { weatherDetails, loading } = state;
     const daysWeatherEl = weatherDetails !== [] && weatherDetails?.filter(weather => weather !== todayWeather).map(weather => <DayWeatherComponent key={weather.id} {...weather} />)
 
     return (
         <>
-            <Header />
-            <Main>
-                <div className="today">
-                    {
-                        showSearch ?
-                            <SearchByLocation />
-                            :
-                            <>
-                                <SearchLocationComponent />
-                                <TodayWeatherComponent />
-                            </>
-                    }
-                </div>
-                <div>
-                    <DaysWeatherCard className="days_weather_container">
-                        {daysWeatherEl}
-                    </DaysWeatherCard>
-                    <TodayHighlightsComponent />
-                </div>
-
-            </Main>
+            {
+                loading ? <div className="loading_text">Loading...</div>
+                    :
+                    <>
+                        <Header />
+                        <Main>
+                            <div className={showSearch ? "weather_today_container today" : "today"}>
+                                {
+                                    showSearch ?
+                                        <SearchByLocation />
+                                        :
+                                        <>
+                                            <SearchLocationComponent />
+                                            <TodayWeatherComponent />
+                                        </>
+                                }
+                            </div>
+                            <div>
+                                <DaysWeatherCard className="days_weather_container">
+                                    {daysWeatherEl}
+                                </DaysWeatherCard>
+                                <TodayHighlightsComponent />
+                            </div>
+                        </Main>
+                    </>
+            }
         </>
     )
 }

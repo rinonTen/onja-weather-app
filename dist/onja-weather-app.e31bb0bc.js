@@ -32125,17 +32125,14 @@ function GlobalContext({
     fetchWeatherDetails
   } = (0, _Reducer.default)(PROXI_URL, API_URL);
   const {
-    getMonthFormated,
-    setDayFormated,
-    dayFormated,
-    monthFormated
+    dayFormated
   } = (0, _DateFormat.default)();
   let {
     weather,
     loading,
     weatherDetails
   } = state;
-  const [weatherDetailsUpdated, setWeatherDetailsUpdated] = (0, _react.useState)([]);
+  const [ShowLocation, setShowLocation] = (0, _react.useState)(false);
   const [locationQuery, setLocationQuery] = (0, _react.useState)("Amsterdam"); // Default location
 
   const [locationName, setLocationName] = (0, _react.useState)('');
@@ -32144,11 +32141,12 @@ function GlobalContext({
   const [showSearch, setShowSearch] = (0, _react.useState)(false);
   const [todayWeather, setWeatherToday] = (0, _react.useState)({});
   const [dayWeatherToHighlight, setDayWeatherToHighlight] = (0, _react.useState)({});
-  const [isConvertToFahrenheit, setIsConvertToFahrenheit] = (0, _react.useState)(false); // Fetch weather
+  const [isConvertToFahrenheit, setIsConvertToFahrenheit] = (0, _react.useState)(false); // Formating date
+
+  let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; // Fetch weather
 
   let weatherEndpoint = PROXI_URL + API_URL + locationQuery;
-  let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   (0, _react.useEffect)(() => {
     fetchWeather(weatherEndpoint);
     fetchWeatherDetails(PROXI_URL + WOEID_URL + locationWoeid + "/");
@@ -32217,6 +32215,8 @@ function GlobalContext({
       setShowSearch,
       setLocationQuery,
       locationQuery,
+      ShowLocation,
+      setShowLocation,
       locationName,
       setLocationName,
       setLocationWoeid,
@@ -32346,18 +32346,21 @@ function SearchByLocation() {
   const {
     weather,
     setLocationQuery,
+    locationQuery,
     locationName,
+    ShowLocation,
+    setShowLocation,
     setLocationName,
-    setLocationWoeid,
     setShowSearch
   } = (0, _react.useContext)(_GlobalContext.Context);
+  const [location, setLocation] = (0, _react.useState)(locationQuery);
 
   function searchLocation(e) {
     e.preventDefault();
     setLocationQuery(e.target.location.value);
+    setShowLocation(true);
   }
 
-  console.log(locationName);
   const locationElements = weather !== [] && weather.map(weather => {
     return /*#__PURE__*/_react.default.createElement("label", {
       htmlFor: "search_location"
@@ -32366,6 +32369,7 @@ function SearchByLocation() {
       onClick: e => {
         setLocationQuery(e.target.value);
         setShowSearch(false);
+        setShowLocation(false);
         setLocationName(e.target.id);
       },
       name: "locationName",
@@ -32388,9 +32392,13 @@ function SearchByLocation() {
     htmlFor: "search_location"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "text",
+    value: location,
+    onChange: e => {
+      setLocation(e.target.value);
+    },
     name: "location",
     placeholder: "Search location"
-  }))), /*#__PURE__*/_react.default.createElement("div", {
+  }))), ShowLocation && /*#__PURE__*/_react.default.createElement("div", {
     className: "locations_container"
   }, locationElements), /*#__PURE__*/_react.default.createElement("div", {
     className: "submit_btn_container"
@@ -32697,7 +32705,7 @@ function TodayHighlightsComponent() {
     dateToday,
     dateTomorrow
   } = (0, _react.useContext)(_GlobalContext.Context);
-  return /*#__PURE__*/_react.default.createElement("section", null, dayWeatherToHighlight && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, console.log(dayWeatherToHighlight.applicable_date), /*#__PURE__*/_react.default.createElement("h2", null, dayWeatherToHighlight.applicable_date === dateToday ? "Today's highlight" : dayWeatherToHighlight.applicable_date === dateTomorrow ? "Tomorrow's highlight" : `${weekday[new Date(dayWeatherToHighlight.applicable_date).getDay()]} ${new Date(dayWeatherToHighlight.applicable_date).getDate()}, ${months[new Date(dayWeatherToHighlight.applicable_date).getMonth()]}'s highlights`), /*#__PURE__*/_react.default.createElement(TodayHighlightsArticle, {
+  return /*#__PURE__*/_react.default.createElement("section", null, dayWeatherToHighlight && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h2", null, dayWeatherToHighlight.applicable_date === dateToday ? "Today's highlight" : dayWeatherToHighlight.applicable_date === dateTomorrow ? "Tomorrow's highlight" : `${weekday[new Date(dayWeatherToHighlight.applicable_date).getDay()]} ${new Date(dayWeatherToHighlight.applicable_date).getDate()}, ${months[new Date(dayWeatherToHighlight.applicable_date).getMonth()]}'s highlights`), /*#__PURE__*/_react.default.createElement(TodayHighlightsArticle, {
     className: "page_article"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "card_container weather_highlighted wind_status"
@@ -32795,16 +32803,19 @@ function App() {
     showSearch
   } = (0, _react.useContext)(_GlobalContext.Context);
   const {
-    weatherDetails
+    weatherDetails,
+    loading
   } = state;
   const daysWeatherEl = weatherDetails !== [] && weatherDetails?.filter(weather => weather !== todayWeather).map(weather => /*#__PURE__*/_react.default.createElement(_DayWeatherComponent.default, _extends({
     key: weather.id
   }, weather)));
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_HeaderComponent.default, null), /*#__PURE__*/_react.default.createElement(Main, null, /*#__PURE__*/_react.default.createElement("div", {
-    className: "today"
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, loading ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "loading_text"
+  }, "Loading...") : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_HeaderComponent.default, null), /*#__PURE__*/_react.default.createElement(Main, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: showSearch ? "weather_today_container today" : "today"
   }, showSearch ? /*#__PURE__*/_react.default.createElement(_SearchByLocation.default, null) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_SearchLocationComponent.default, null), /*#__PURE__*/_react.default.createElement(_TodayWeatherComponent.default, null))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(DaysWeatherCard, {
     className: "days_weather_container"
-  }, daysWeatherEl), /*#__PURE__*/_react.default.createElement(_TodayHighlightsComponent.default, null))));
+  }, daysWeatherEl), /*#__PURE__*/_react.default.createElement(_TodayHighlightsComponent.default, null)))));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../GlobalContext":"GlobalContext.js","../components/HeaderComponent":"components/HeaderComponent.js","../components/SearchLocationComponent":"components/SearchLocationComponent.js","../components/SearchByLocation":"components/SearchByLocation.js","../components/TodayWeatherComponent":"components/TodayWeatherComponent.js","../components/DayWeatherComponent":"components/DayWeatherComponent.js","../components/TodayHighlightsComponent":"components/TodayHighlightsComponent.js"}],"index.js":[function(require,module,exports) {
 "use strict";
