@@ -54,12 +54,9 @@ const Img = Styled.img`
     margin-top: 76px;
     margin-bottom: 40px;
 `
-
-let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
+ 
 export default function TodayWeatherComponent() {
-    const { state, todayWeather, isConvertToFahrenheit } = useContext(Context);
+    const { state, todayWeather, isConvertToFahrenheit, weekday, months } = useContext(Context);
     const { weather } = state;
 
     const temp = todayWeather && Math.round(todayWeather.the_temp);

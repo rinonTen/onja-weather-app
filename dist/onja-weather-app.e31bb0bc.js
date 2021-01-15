@@ -32114,8 +32114,6 @@ exports.Context = Context;
 const PROXI_URL = "https://cors-anywhere.herokuapp.com/";
 const API_URL = "https://www.metaweather.com/api/location/search/?query=";
 const WOEID_URL = "https://www.metaweather.com/api/location/";
-let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function GlobalContext({
   children
@@ -32149,6 +32147,8 @@ function GlobalContext({
   const [isConvertToFahrenheit, setIsConvertToFahrenheit] = (0, _react.useState)(false); // Fetch weather
 
   let weatherEndpoint = PROXI_URL + API_URL + locationQuery;
+  let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   (0, _react.useEffect)(() => {
     fetchWeather(weatherEndpoint);
     fetchWeatherDetails(PROXI_URL + WOEID_URL + locationWoeid + "/");
@@ -32177,7 +32177,21 @@ function GlobalContext({
     month = '0' + month;
   }
 
-  ; // Find today's weather
+  ; // Date today and tomorrow
+
+  let currentDate = new Date();
+  let todayTimestamp = currentDate.setDate(currentDate.getDate());
+  let tommorowTimestamp = currentDate.setDate(currentDate.getDate() + 1);
+
+  function getDates(timestamp) {
+    let date = new Date(timestamp);
+    let dateTomorrow = date.toLocaleDateString();
+    let dateTomorrowFormated = dateTomorrow.replace(/(\d+)\/(\d+)\/(\d+)/g, "$3-0$1-$2");
+    return dateTomorrowFormated;
+  }
+
+  const dateToday = getDates(todayTimestamp);
+  const dateTomorrow = getDates(tommorowTimestamp); // Find today's weather
 
   (0, _react.useEffect)(() => {
     const dateToday = weatherDetails && weatherDetails.find(weather => weather.applicable_date === today);
@@ -32209,7 +32223,11 @@ function GlobalContext({
       setShowSearch,
       showSearch,
       isConvertToFahrenheit,
-      setIsConvertToFahrenheit
+      setIsConvertToFahrenheit,
+      weekday,
+      months,
+      dateToday,
+      dateTomorrow
     }
   }, children);
 }
@@ -32295,6 +32313,7 @@ const Form = _styledComponents.default.form`
 
 function SearchLocationComponent() {
   const {
+    weather,
     setShowSearch,
     setLocationName
   } = (0, _react.useContext)(_GlobalContext.Context);
@@ -32332,37 +32351,50 @@ function SearchByLocation() {
     setLocationWoeid,
     setShowSearch
   } = (0, _react.useContext)(_GlobalContext.Context);
-  console.log(weather);
 
   function searchLocation(e) {
     e.preventDefault();
-    setLocationName(e.target.location.value);
+    setLocationQuery(e.target.location.value);
   }
 
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", {
+  console.log(locationName);
+  const locationElements = weather !== [] && weather.map(weather => {
+    return /*#__PURE__*/_react.default.createElement("label", {
+      htmlFor: "search_location"
+    }, /*#__PURE__*/_react.default.createElement("input", {
+      type: "text",
+      onClick: e => {
+        setLocationQuery(e.target.value);
+        setShowSearch(false);
+        setLocationName(e.target.id);
+      },
+      name: "locationName",
+      value: weather.title,
+      placeholder: "Search location",
+      readOnly: true
+    }));
+  });
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "search_container"
+  }, /*#__PURE__*/_react.default.createElement("button", {
     type: "button",
     onClick: () => setShowSearch(false)
   }, "\xD7"), /*#__PURE__*/_react.default.createElement("form", {
+    className: "search_form",
     onSubmit: searchLocation
-  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("label", {
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "input_container"
+  }, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "search_location"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "text",
     name: "location",
     placeholder: "Search location"
-  })), locationName !== "" && /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "search_location"
-  }, /*#__PURE__*/_react.default.createElement("input", {
-    type: "text",
-    onClick: e => {
-      setLocationQuery(e.target.value);
-      setShowSearch(false);
-    },
-    name: "locationName",
-    value: locationName,
-    placeholder: "Search location",
-    readOnly: true
-  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", {
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "locations_container"
+  }, locationElements), /*#__PURE__*/_react.default.createElement("div", {
+    className: "submit_btn_container"
+  }, /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
   }, "Search"))));
 }
@@ -32438,14 +32470,14 @@ const Img = _styledComponents.default.img`
     margin-top: 76px;
     margin-bottom: 40px;
 `;
-let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function TodayWeatherComponent() {
   const {
     state,
     todayWeather,
-    isConvertToFahrenheit
+    isConvertToFahrenheit,
+    weekday,
+    months
   } = (0, _react.useContext)(_GlobalContext.Context);
   const {
     weather
@@ -32540,10 +32572,11 @@ function DayWeatherComponent({
 }) {
   const {
     highlightWeatherOfTheDay,
-    isConvertToFahrenheit
+    isConvertToFahrenheit,
+    weekday,
+    months,
+    dateTomorrow
   } = (0, _react.useContext)(_GlobalContext.Context);
-  let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const maxTempToFahrenheit = max_temp * 9 / 5 + 32;
   const minTempToFahrenheit = min_temp * 9 / 5 + 32;
   return /*#__PURE__*/_react.default.createElement(DayWeatherContainer, {
@@ -32552,7 +32585,7 @@ function DayWeatherComponent({
     className: "day_weather_container"
   }, /*#__PURE__*/_react.default.createElement("h3", {
     className: "day"
-  }, " ", weekday[new Date(applicable_date).getDay()], " ", new Date(applicable_date).getDate(), ", ", months[new Date(applicable_date).getMonth()], " "), /*#__PURE__*/_react.default.createElement("div", {
+  }, "  ", applicable_date === dateTomorrow ? "Tomorrow" : `${weekday[new Date(applicable_date).getDay()]} ${new Date(applicable_date).getDate()}, ${months[new Date(applicable_date).getMonth()]}`, " "), /*#__PURE__*/_react.default.createElement("div", {
     className: "image_container"
   }, /*#__PURE__*/_react.default.createElement("img", {
     src: `https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`,
@@ -32658,9 +32691,13 @@ const TodayHighlightsArticle = _styledComponents.default.section`
 
 function TodayHighlightsComponent() {
   const {
-    dayWeatherToHighlight
+    dayWeatherToHighlight,
+    weekday,
+    months,
+    dateToday,
+    dateTomorrow
   } = (0, _react.useContext)(_GlobalContext.Context);
-  return /*#__PURE__*/_react.default.createElement("section", null, dayWeatherToHighlight && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h2", null, dayWeatherToHighlight.applicable_date, "'s highlights"), /*#__PURE__*/_react.default.createElement(TodayHighlightsArticle, {
+  return /*#__PURE__*/_react.default.createElement("section", null, dayWeatherToHighlight && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, console.log(dayWeatherToHighlight.applicable_date), /*#__PURE__*/_react.default.createElement("h2", null, dayWeatherToHighlight.applicable_date === dateToday ? "Today's highlight" : dayWeatherToHighlight.applicable_date === dateTomorrow ? "Tomorrow's highlight" : `${weekday[new Date(dayWeatherToHighlight.applicable_date).getDay()]} ${new Date(dayWeatherToHighlight.applicable_date).getDate()}, ${months[new Date(dayWeatherToHighlight.applicable_date).getMonth()]}'s highlights`), /*#__PURE__*/_react.default.createElement(TodayHighlightsArticle, {
     className: "page_article"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "card_container weather_highlighted wind_status"
@@ -32811,7 +32848,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50038" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56131" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -40,15 +40,14 @@ const DayWeatherContainer = Styled.div`
     }
 `
 export default function DayWeatherComponent({ weather_state_abbr, max_temp, min_temp, applicable_date }) {
-    const { highlightWeatherOfTheDay, isConvertToFahrenheit } = useContext(Context);
-    let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+    const { highlightWeatherOfTheDay, isConvertToFahrenheit,weekday, months, dateTomorrow } = useContext(Context);
+    
     const maxTempToFahrenheit = (max_temp * 9/5) + 32;
     const minTempToFahrenheit = (min_temp * 9/5) + 32;
-
+   
     return (
         <DayWeatherContainer id={applicable_date} onClick={highlightWeatherOfTheDay} className="day_weather_container">
-            <h3 className="day"> {weekday[new Date(applicable_date).getDay()]} {new Date(applicable_date).getDate()}, {months[new Date(applicable_date).getMonth()]} </h3>
+            <h3 className="day">  {applicable_date === dateTomorrow  ? "Tomorrow" : `${weekday[new Date(applicable_date).getDay()]} ${new Date(applicable_date).getDate()}, ${months[new Date(applicable_date).getMonth()]}`} </h3>
             <div className="image_container">
               <img src={`https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`} alt={`${weather_state_abbr}'s icon`} />
             </div>

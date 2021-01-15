@@ -6,9 +6,7 @@ const Context = createContext();
 const PROXI_URL = "https://cors-anywhere.herokuapp.com/";
 const API_URL = "https://www.metaweather.com/api/location/search/?query=";
 const WOEID_URL = "https://www.metaweather.com/api/location/";
-let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-
+ 
 function GlobalContext({ children }) {
     const { state, dispatch, fetchWeather, fetchWeatherDetails } = Reducer(PROXI_URL, API_URL);
     const {getMonthFormated, setDayFormated, dayFormated, monthFormated } = DateFormat();
@@ -24,6 +22,8 @@ function GlobalContext({ children }) {
     // Fetch weather
     let weatherEndpoint = PROXI_URL + API_URL + locationQuery;
 
+    let weekday = ["Sun", "Mon", "Tue", "Wed", "Thur", "Frid", "Sat"];
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
     useEffect(() => {
         fetchWeather(weatherEndpoint);
         fetchWeatherDetails(PROXI_URL + WOEID_URL + locationWoeid + "/")
@@ -46,13 +46,28 @@ function GlobalContext({ children }) {
     today = year + '-' + month + '-' + day;
     if (month < 10) { month = '0' + month };
 
+ // Date today and tomorrow
+
+ let currentDate = new Date();
+ let todayTimestamp = currentDate.setDate(currentDate.getDate());
+ let tommorowTimestamp = currentDate.setDate(currentDate.getDate() + 1)
+ 
+ function getDates(timestamp) {
+    let date = new Date(timestamp);
+    let dateTomorrow = date.toLocaleDateString();
+    let dateTomorrowFormated = dateTomorrow.replace(/(\d+)\/(\d+)\/(\d+)/g, "$3-0$1-$2");   
+    return dateTomorrowFormated;
+}
+ 
+const dateToday = getDates(todayTimestamp);
+const dateTomorrow = getDates(tommorowTimestamp);
+
     // Find today's weather
     useEffect(() => {
         const dateToday = weatherDetails && weatherDetails.find(weather => weather.applicable_date === today);
         setWeatherToday(dateToday);
         setDayWeatherToHighlight(dateToday)
     }, [dayFormated, weatherDetails])
-  
  
     function highlightWeatherOfTheDay(e) {
         const date = e.currentTarget.id
@@ -61,7 +76,7 @@ function GlobalContext({ children }) {
     }
  
     return (
-        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, locationQuery, locationName, setLocationName, setLocationWoeid, setShowSearch, showSearch, isConvertToFahrenheit, setIsConvertToFahrenheit }}>
+        <Context.Provider value={{ state, dispatch, weather, highlightWeatherOfTheDay, dayWeatherToHighlight, todayWeather, weatherDetails, setShowSearch, setLocationQuery, locationQuery, locationName, setLocationName, setLocationWoeid, setShowSearch, showSearch, isConvertToFahrenheit, setIsConvertToFahrenheit, weekday, months, dateToday, dateTomorrow }}>
             {children}
         </Context.Provider>
     )

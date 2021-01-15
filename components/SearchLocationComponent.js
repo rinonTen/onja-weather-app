@@ -29,8 +29,8 @@ const Form = Styled.form`
 `
 
 export default function SearchLocationComponent() {
-    const {setShowSearch, setLocationName,} = useContext(Context);
-   
+    const {weather, setShowSearch, setLocationName,} = useContext(Context);
+
     return (
         <Form>
             <input onClick={() => {

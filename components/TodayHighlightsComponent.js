@@ -77,14 +77,15 @@ const TodayHighlightsArticle = Styled.section`
 
 `
 export default function TodayHighlightsComponent() {
-    const { dayWeatherToHighlight } = useContext(Context);
+    const { dayWeatherToHighlight, weekday, months, dateToday, dateTomorrow } = useContext(Context);
 
     return (
         <section>
             {
                 dayWeatherToHighlight &&
                 <>
-                    <h2>{dayWeatherToHighlight.applicable_date}'s highlights</h2>
+                {console.log(dayWeatherToHighlight.applicable_date)}
+                    <h2>{dayWeatherToHighlight.applicable_date === dateToday ? "Today's highlight" : dayWeatherToHighlight.applicable_date === dateTomorrow ? "Tomorrow's highlight" : `${weekday[new Date(dayWeatherToHighlight.applicable_date).getDay()]} ${new Date(dayWeatherToHighlight.applicable_date).getDate()}, ${months[new Date(dayWeatherToHighlight.applicable_date).getMonth()]}'s highlights`}</h2>
                     <TodayHighlightsArticle className="page_article">
                         <div className="card_container weather_highlighted wind_status">
                             <div>

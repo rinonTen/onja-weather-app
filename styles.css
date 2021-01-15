@@ -1,4 +1,4 @@
- body { 
+ body {
      margin: 0;
      font-family: 'Raleway', sans-serif;
      font-style: normal;
@@ -7,6 +7,10 @@
      line-height: 19px;
      background: #100E1D;
      color: #E7E7EB;
+ }
+
+ main {
+     position: relative;
  }
 
  ul {
@@ -21,6 +25,7 @@
  p {
      margin: 0;
  }
+
  label {
      display: block;
  }
@@ -33,20 +38,73 @@
      visibility: hidden;
  }
 
+ .today {
+     position: absolute;
+     top: 0;
+     bottom: 0;
+     right: 0;
+     left: 0;
+     padding: 13px;
+ }
+
  input {
+    background: #1E213A;
      width: 100%;
  }
 
  input::placeholder {
-    font-size: 15px;
-    line-height: 19px; 
-    color: #E7E7EB;
+     font-size: 15px;
+     line-height: 19px;
+     color: #E7E7EB;
  }
 
  progress {
      width: 100%;
      height: 7px;
      -webkit-appearance: none;
+ }
+
+ .search_form {
+     display: grid;
+     grid-template-columns: 67% 30%;
+ }
+
+ .input_container {
+     grid-column: 1/2;
+     grid-row: 1;
+ }
+
+ .input_container input,
+ .locations_container input,
+ .locations_container input:hover {
+     border: 1px solid #E7E7EB;
+     box-sizing: border-box;
+     padding: 15px;
+     padding-left: 15px;
+     padding-right: 15px; 
+     margin-bottom: 38px;
+ }
+
+ .locations_container {
+     grid-column: 1/3;
+     grid-row: 2;
+ }
+
+ .locations_container input {
+    border: none;
+    font-size: 16px;
+    line-height: 19px;
+    color: #E7E7EB;
+ }
+
+ .locations_container input {
+     border: none;
+ }
+
+ .submit_btn_container {
+     display: flex;
+     justify-content: flex-end;
+     grid-column: 2;
  }
 
  ::-webkit-progress-bar {
@@ -57,6 +115,19 @@
  ::-webkit-progress-value {
      background-color: #FFEC65;
      border-radius: 80px;
+ }
+
+ .submit_btn_container button {
+    height: 48px;
+     border: none;
+     background: #3C47E9;
+     padding: 11px;
+     padding-left: 15px;
+     padding-right: 15px;
+     font-weight: 600;
+     font-size: 16px;
+     line-height: 19px;
+     color: #E7E7EB;
  }
 
  @media(min-width: 1114px) {
@@ -70,16 +141,14 @@
          grid-template-columns: 30% 68%;
          column-gap: 32px;
      }
-
-    .days_weather_container {
+     .days_weather_container {
          display: grid;
          grid-template-columns: 45% 45%;
          gap: 32px;
      }
-
      .page_article {
-        display: grid;
-        grid-template-columns: 48% 48%;
-        gap: 48px; 
+         display: grid;
+         grid-template-columns: 48% 48%;
+         gap: 48px;
      }
  }
