@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Styled from 'styled-components';
 import { Context } from '../GlobalContext';
-import Header from '../components/HeaderComponent';
+import ConversionButtonsComponent from '../components/conversionButtonsComponent';
 import SearchLocationComponent from '../components/SearchLocationComponent';
 import SearchByLocation from "../components/SearchByLocation";
 import TodayWeatherComponent from '../components/TodayWeatherComponent';
@@ -31,7 +31,7 @@ export default function App() {
                 loading ? <div className="loading_text">Loading...</div>
                     :
                     <>
-                        <Header />
+                        <ConversionButtonsComponent />
                         <Main>
                             <div className={showSearch ? "weather_today_container today" : "today"}>
                                 {
@@ -44,7 +44,7 @@ export default function App() {
                                         </>
                                 }
                             </div>
-                            <div>
+                            <div className="details_weather_container">
                                 <DaysWeatherCard className="days_weather_container">
                                     {daysWeatherEl}
                                 </DaysWeatherCard>
