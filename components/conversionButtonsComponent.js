@@ -4,7 +4,7 @@ import { Context } from '../GlobalContext';
 
 export default function ConversionButtonsComponent() {
     const { setIsConvertToFahrenheit, isConvertToFahrenheit } = useContext(Context);
-     console.log(isConvertToFahrenheit)
+      
     return (
         <>
             <div className="page_container">

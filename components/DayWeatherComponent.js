@@ -6,6 +6,7 @@ import Styled from 'styled-components';
 const DayWeatherContainer = Styled.div` 
     background-color: #1E213A;
     padding: 12px;
+    cursor: pointer;
 
     .image_container {
         width: 100%;

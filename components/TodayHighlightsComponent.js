@@ -4,6 +4,9 @@ import { Context } from '../GlobalContext';
 
 const TodayHighlightsArticle = Styled.section`
    h2 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px; 
     margin: 23px;   
    }
 

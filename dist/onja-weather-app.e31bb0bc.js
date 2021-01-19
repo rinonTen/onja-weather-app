@@ -32252,7 +32252,6 @@ function ConversionButtonsComponent() {
     setIsConvertToFahrenheit,
     isConvertToFahrenheit
   } = (0, _react.useContext)(_GlobalContext.Context);
-  console.log(isConvertToFahrenheit);
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "page_container"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -32329,7 +32328,18 @@ function SearchLocationComponent() {
     },
     type: "text",
     placeholder: "Search for places"
-  }), /*#__PURE__*/_react.default.createElement("button", null));
+  }), /*#__PURE__*/_react.default.createElement("button", null, /*#__PURE__*/_react.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    height: "24",
+    viewBox: "0 0 24 24",
+    width: "24"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fill: "#ffffff",
+    d: "M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"
+  }))));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../GlobalContext":"GlobalContext.js"}],"components/SearchByLocation.js":[function(require,module,exports) {
 "use strict";
@@ -32518,7 +32528,18 @@ function TodayWeatherComponent() {
     className: "dayname"
   }, /*#__PURE__*/_react.default.createElement("span", null, "Today - "), /*#__PURE__*/_react.default.createElement("span", null, weekday[new Date(todayWeather.applicable_date).getDay()], " ", new Date(todayWeather.applicable_date).getDate(), ", ", months[new Date(todayWeather.applicable_date).getMonth()])), /*#__PURE__*/_react.default.createElement("li", {
     className: "city"
-  }, weather[0]?.title))) : /*#__PURE__*/_react.default.createElement("div", null, "loading..."));
+  }, /*#__PURE__*/_react.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    height: "24",
+    viewBox: "0 0 24 24",
+    width: "24"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fill: "#ffffff",
+    d: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+  })), /*#__PURE__*/_react.default.createElement("span", null, weather[0]?.title)))) : /*#__PURE__*/_react.default.createElement("div", null, "loading..."));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../GlobalContext":"GlobalContext.js"}],"components/DayWeatherComponent.js":[function(require,module,exports) {
 "use strict";
@@ -32543,6 +32564,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 const DayWeatherContainer = _styledComponents.default.div` 
     background-color: #1E213A;
     padding: 12px;
+    cursor: pointer;
 
     .image_container {
         width: 100%;
@@ -32629,6 +32651,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 const TodayHighlightsArticle = _styledComponents.default.section`
    h2 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px; 
     margin: 23px;   
    }
 
@@ -32866,7 +32891,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58716" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54041" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -178,11 +178,9 @@
  }
 
  @media(min-width: 1114px) {
-    
      #root {
          position: relative;
      }
-      
      main {
          display: grid;
          grid-template-columns: 28% auto;
@@ -192,28 +190,31 @@
 
      section h2 {
          margin-bottom: 0;
+         margin-left: 0;
      }
 
      main.sc-jSgupP.LJwnr {
          grid-gap: 110px;
          padding-right: 88px;
      }
-
      .sc-gKsewC.eczXlG.days_weather_container {
          padding: 0;
      }
-
      .LJwnr .today {
-        position: fixed;
-        background: #1E213A;
-    }
+         position: fixed;
+         width: 30%;
+         background: #1E213A;
+     }
 
-    .details_weather_container {
-        position: absolute;
-        left: 25%;
-        padding-bottom: 155px;
+     .weather_today_container.today {
+        width: 28%;
     }
-
+     .details_weather_container {
+         position: absolute;
+         left: 40%;
+         width: 50%;
+         padding-bottom: 155px;
+     }
      .sc-gKsewC.eczXlG.days_weather_container {
          grid-template-columns: repeat(5, 1fr);
          padding-top: 148px;
@@ -260,7 +261,7 @@
          z-index: 1;
          display: flex;
          justify-content: flex-end;
-         padding-right: 88px;
+         padding-right: 123px;
      }
  }
 
