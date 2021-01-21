@@ -11,6 +11,11 @@ import TodayHighlightsComponent from '../components/TodayHighlightsComponent';
 const Main = Styled.main`
     & .today {
         background: #1E213A; 
+        @media(min-width: 1114px) {
+            position: fixed;
+            width: 30%;
+            background: #1E213A;
+        }
     }
 `
 
@@ -19,6 +24,13 @@ const DaysWeatherCard = Styled.div`
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px;
     padding: 54px;
+
+    @media(min-width: 1114px) {
+        grid-template-columns: repeat(5, 1fr);
+        padding: 0;
+        padding-top: 148px;
+        padding-bottom: 72px;
+    }
 `
 export default function App() {
     const { state, todayWeather, showSearch } = useContext(Context);

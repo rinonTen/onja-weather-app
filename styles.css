@@ -42,12 +42,10 @@
  section h2 {
      margin-left: 23px;
  }
-
- /* div#root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
+ 
+.button_container {
+    display: none;
+}
 
  .button_container button {
      width: 40px;
@@ -109,7 +107,7 @@
 
  .search_form {
      display: grid;
-     grid-template-columns: 67% 30%;
+     grid-template-columns: 75% 25%;
  }
 
  .input_container {
@@ -145,7 +143,8 @@
  }
 
  .locations_container input {
-     border: none;
+     border: transparent;
+     height: 64px;
  }
 
  .submit_btn_container {
@@ -165,7 +164,7 @@
  }
 
  .submit_btn_container button {
-     height: 48px;
+     height: 51px;
      border: none;
      background: #3C47E9;
      padding: 11px;
@@ -197,39 +196,35 @@
          grid-gap: 110px;
          padding-right: 88px;
      }
+
      .sc-gKsewC.eczXlG.days_weather_container {
          padding: 0;
      }
-     .LJwnr .today {
-         position: fixed;
-         width: 30%;
-         background: #1E213A;
-     }
-
+      
      .weather_today_container.today {
         width: 28%;
+        padding-top: 0;
     }
+
      .details_weather_container {
          position: absolute;
          left: 40%;
          width: 50%;
          padding-bottom: 155px;
      }
-     .sc-gKsewC.eczXlG.days_weather_container {
-         grid-template-columns: repeat(5, 1fr);
-         padding-top: 148px;
-         padding-bottom: 72px;
-     }
+ 
      .days_weather_container {
          display: grid;
          grid-template-columns: 45% 45%;
          gap: 32px;
      }
+
      .page_article {
          display: grid;
          grid-template-columns: 48% 48%;
          gap: 48px;
      }
+     
      .card_container.weather_highlighted.wind_status {
          height: 204px;
          margin: 0;
@@ -239,9 +234,11 @@
          margin: 0;
          height: 204px;
      }
-     p.page_paragraph.number {
+     
+     .page_paragraph.number {
          margin-bottom: 32px;
      }
+
      .card_container.humidity_measurement {
          transform: translateY(-51px);
      }
@@ -254,7 +251,7 @@
      .card_container.weather_highlighted.air_pressure {
          margin: 0;
      }
-     .button_container {
+     .button_container { 
          position: absolute;
          top: 42px;
          right: 0;

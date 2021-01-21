@@ -32155,7 +32155,9 @@ function GlobalContext({
     if (loading == false) {
       weather.map(city => setLocationWoeid(city.woeid));
     }
-  }, [locationQuery, locationWoeid, weather]); // Date today to compare with the date in the api
+  }, [locationQuery, locationWoeid, weather]);
+  console.log(weatherDetails);
+  console.log(weather); // Date today to compare with the date in the api
 
   let today = new Date();
   let day = today.getDate();
@@ -32304,6 +32306,9 @@ const Form = _styledComponents.default.form`
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         flex-basis: 40%;
         color: white;
+        border: transparent;
+        height: 32px;
+        font-weight: 500;
         }
 
         button {
@@ -32317,7 +32322,6 @@ const Form = _styledComponents.default.form`
 
 function SearchLocationComponent() {
   const {
-    weather,
     setShowSearch,
     setLocationName
   } = (0, _react.useContext)(_GlobalContext.Context);
@@ -32328,7 +32332,9 @@ function SearchLocationComponent() {
     },
     type: "text",
     placeholder: "Search for places"
-  }), /*#__PURE__*/_react.default.createElement("button", null, /*#__PURE__*/_react.default.createElement("svg", {
+  }), /*#__PURE__*/_react.default.createElement("button", {
+    type: "button"
+  }, /*#__PURE__*/_react.default.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     height: "24",
     viewBox: "0 0 24 24",
@@ -32337,7 +32343,7 @@ function SearchLocationComponent() {
     d: "M0 0h24v24H0z",
     fill: "none"
   }), /*#__PURE__*/_react.default.createElement("path", {
-    fill: "#ffffff",
+    fill: "#E7E7EB",
     d: "M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"
   }))));
 }
@@ -32351,11 +32357,30 @@ exports.default = SearchByLocation;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
 var _GlobalContext = require("../GlobalContext");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const SearchContainer = _styledComponents.default.div`
+    display: flex;
+    flex-direction: column;
+
+    .hide_manu_btn {
+        background: none;
+        color: #E7E7EB;
+        font-size: 32px;
+        align-self: flex-end;
+        padding: 0;
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+`;
 
 function SearchByLocation() {
   const {
@@ -32393,10 +32418,11 @@ function SearchByLocation() {
       readOnly: true
     }));
   });
-  return /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(SearchContainer, {
     className: "search_container"
   }, /*#__PURE__*/_react.default.createElement("button", {
     type: "button",
+    className: "hide_manu_btn",
     onClick: () => setShowSearch(false)
   }, "\xD7"), /*#__PURE__*/_react.default.createElement("form", {
     className: "search_form",
@@ -32421,7 +32447,7 @@ function SearchByLocation() {
     type: "submit"
   }, "Search"))));
 }
-},{"react":"node_modules/react/index.js","../GlobalContext":"GlobalContext.js"}],"components/TodayWeatherComponent.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../GlobalContext":"GlobalContext.js"}],"components/TodayWeatherComponent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32486,6 +32512,10 @@ const TodayWeatherContainer = _styledComponents.default.div`
     .city {
         font-size: 18px;
         line-height: 21px;
+
+        svg {
+            margin-bottom: -6px;
+        }
     }
 `;
 const Img = _styledComponents.default.img`
@@ -32537,7 +32567,7 @@ function TodayWeatherComponent() {
     d: "M0 0h24v24H0z",
     fill: "none"
   }), /*#__PURE__*/_react.default.createElement("path", {
-    fill: "#ffffff",
+    fill: "#88869D",
     d: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
   })), /*#__PURE__*/_react.default.createElement("span", null, weather[0]?.title)))) : /*#__PURE__*/_react.default.createElement("div", null, "loading..."));
 }
@@ -32817,6 +32847,11 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 const Main = _styledComponents.default.main`
     & .today {
         background: #1E213A; 
+        @media(min-width: 1114px) {
+            position: fixed;
+            width: 30%;
+            background: #1E213A;
+        }
     }
 `;
 const DaysWeatherCard = _styledComponents.default.div`
@@ -32824,6 +32859,13 @@ const DaysWeatherCard = _styledComponents.default.div`
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px;
     padding: 54px;
+
+    @media(min-width: 1114px) {
+        grid-template-columns: repeat(5, 1fr);
+        padding: 0;
+        padding-top: 148px;
+        padding-bottom: 72px;
+    }
 `;
 
 function App() {
@@ -32891,7 +32933,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54041" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57619" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

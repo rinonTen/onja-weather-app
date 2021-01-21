@@ -37,6 +37,9 @@ function GlobalContext({ children }) {
         }
     }, [locationQuery, locationWoeid, weather])
 
+    console.log(weatherDetails)
+
+    console.log(weather)
     // Date today to compare with the date in the api
     let today = new Date();
     let day = today.getDate();
